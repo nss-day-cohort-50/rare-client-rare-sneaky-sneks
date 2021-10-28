@@ -14,7 +14,7 @@ export const CategoryManager = () => {
         getCats()
             .then(res => res.json())
             .then(cats => setCategories(cats))
-    }, [, triggerRender]
+    }, [triggerRender]
     )
 
     const setCategory = (event) => {
