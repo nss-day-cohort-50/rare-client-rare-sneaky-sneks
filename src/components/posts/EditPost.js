@@ -62,7 +62,10 @@ export const EditPost = ({ postToModify, editPost, updatePosts }) => {
                     onChange={handleControlledInputChange}>
                     <option value={null} disabled>Select Category</option>
                     {
-                        categories.map(c => <option name="category_id" selected={post.category_id === c.id ? true : false} value={c.id}>{c.label}</option>)
+                        categories.map(c =>
+                            <option name="category_id" selected={post.category_id === c.id ? true : false} value={c.id}>
+                                {c.label}
+                            </option>)
                     }
                 </select>
             </div>
@@ -76,7 +79,7 @@ export const EditPost = ({ postToModify, editPost, updatePosts }) => {
                 />
             </div>
             <div className="form-group">
-                <img src={post.image_url} /><br />
+                <img src={post.image_url} alt="post" /><br />
                 <label htmlFor="image_url">Image link</label>
                 <input type="text" name="image_url" className="form-control"
                     placeholder="Place URL here"
@@ -87,7 +90,7 @@ export const EditPost = ({ postToModify, editPost, updatePosts }) => {
             </div>
             <div className="form-group">
                 <label htmlFor="content">Post Description:</label>
-                <textarea class="textarea" name="content" className="form-control"
+                <textarea name="content" className="form-control"
                     placeholder="Description"
                     value={post.content}
                     onChange={handleControlledInputChange}

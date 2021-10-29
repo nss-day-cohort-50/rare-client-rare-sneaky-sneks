@@ -9,7 +9,7 @@ export const EditDeleteModal = ({ postToModify, updatePosts, confirmDelete, edit
     const handleDelete = () => {
         deletePost(postToModify.id)
             .then(response => {
-                if (response.ok && path === "myposts" || path ==="posts") {
+                if ((response.ok && path === "myposts") || (response.ok && path === "posts")) {
                     confirmDelete.current.close()
                     getMyPosts().then(res => res.json())
                         .then(res => updatePosts(res))

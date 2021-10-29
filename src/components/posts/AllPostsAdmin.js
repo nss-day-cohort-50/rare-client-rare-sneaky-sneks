@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { deletePost, getPosts, updatePost } from "./PostProvider"
+import { getPosts, updatePost } from "./PostProvider"
 import "./AllPostsAdmin.css"
 import { EditDeleteModal } from "./EditDeleteModal"
 
@@ -27,19 +27,11 @@ export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
         <>
             <EditDeleteModal postToModify={postToModify} updatePosts={updatePosts} confirmDelete={confirmDelete} editPost={editPost} />
 
-            {/* <dialog className="confirmDeleteModal" ref={confirmDelete}>
-                <h2>Confirm delete of '{postToDelete?.title}' by {postToDelete?.user.first_name} {postToDelete?.user.last_name}?</h2>
-                <div className="confirm-delete">
-                    <button onClick={handleDelete}>Confirm Delete</button>
-                    <button onClick={() => confirmDelete.current.close()}>Cancel</button>
-                </div>
-            </dialog> */}
-
             <h2>Admin</h2>
             <table className="adminPostsTable">
                 <thead>
                     <tr>
-                        <td>⚙️🗑️</td>
+                        <td><span role="img" aria-label="emoji">⚙️🗑️</span></td>
                         <td>Title</td>
                         <td>Author</td>
                         <td>Date</td>
@@ -48,20 +40,21 @@ export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
                         <td>Approved</td>
                     </tr>
                 </thead>
+                <tbody>
                 {posts?.map(post => {
-                    return <><tr>
-                        <td className="icons">
+                    return <><tr key={`tr-${post.id}`}>
+                        <td className="icons" >
                             <button className="deleteButton"
                                 onClick={() => {
                                     setPost(post)
                                     editPost.current.showModal()
-                                }}>⚙️</button>
+                                }}><span role="img" aria-label="emoji">⚙️</span></button>
                             <button className="deleteButton"
                                 onClick={() => {
                                     setPost(post)
                                     confirmDelete.current.showModal()
                                 }}>
-                                🗑️
+                                <span role="img" aria-label="emoji">🗑️</span>
                             </button>
                         </td>
                         <td>
@@ -87,6 +80,7 @@ export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
                     </tr>
                     </>
                 })}
+                </tbody>
             </table>
         </>
     )

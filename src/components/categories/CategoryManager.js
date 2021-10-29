@@ -8,8 +8,6 @@ export const CategoryManager = () => {
     const [editMode, setEditMode] = useState(false)
     const [triggerRender, setTrigger] = useState(0)
 
-    console.log(triggerRender)
-
     useEffect(() => {
         getCats()
             .then(res => res.json())
@@ -47,13 +45,13 @@ export const CategoryManager = () => {
                                 {cat.label}
                                 <div>
                                     <button className="edit-delete"
-                                        onClick={() => { editCategory(cat) }}>🔧</button>
+                                        onClick={() => { editCategory(cat) }}><span role="img" aria-label="emoji">🔧</span></button>
                                     <button className="edit-delete"
                                         onClick={() => {
                                             deleteCategory(cat.id)
                                                 .then(updateTrigger())
                                         }
-                                        }>❌</button>
+                                        }><span role="img" aria-label="emoji">❌</span></button>
                                 </div>
                             </div>
                         </li>

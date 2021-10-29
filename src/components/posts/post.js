@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { deletePost, getCurrentUser, getPost, getUsers, postComment } from "./PostProvider"
 import { useHistory } from "react-router"
 import "./Post.css"
@@ -30,7 +30,6 @@ export const Post = () => {
 
     const toggleComment = () => {
         setToggle(!isToggled)
-        console.log(post.comments)
     }
 
     const constructComment = () => {

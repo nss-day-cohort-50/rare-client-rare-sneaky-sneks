@@ -8,13 +8,11 @@ export const TagManager = () => {
     const [editMode, setEditMode] = useState(false)
     const [triggerRender, setTrigger] = useState(0)
 
-    console.log(triggerRender)
-
     useEffect(() => {
         getTags()
             .then(res => res.json())
             .then(t => setTags(t))
-    }, [, triggerRender]
+    }, [triggerRender]
     )
 
     const setTag = (event) => {
@@ -47,13 +45,13 @@ export const TagManager = () => {
                                 {tag.label}
                                 <div>
                                     <button className="edit-delete"
-                                        onClick={() => { editTag(tag) }}>🔧</button>
+                                        onClick={() => { editTag(tag) }}><span role="img" aria-label="emoji">🔧</span></button>
                                     <button className="edit-delete"
                                         onClick={() => {
                                             deleteTag(tag.id)
                                                 .then(updateTrigger())
                                         }
-                                        }>❌</button>
+                                        }><span role="img" aria-label="emoji">❌</span></button>
                                 </div>
                             </div>
                         </li>
