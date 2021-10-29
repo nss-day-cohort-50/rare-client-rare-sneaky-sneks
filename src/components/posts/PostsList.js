@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-
+import "./Post.css"
 
 export const Posts = () => {
     const [posts, updatePosts] = useState([])
@@ -17,22 +17,28 @@ export const Posts = () => {
     return (
         <>
             <h2>My Posts</h2>
-            <ul>
+            <article className="postList">
                 {posts?.map(post => {
-                    return <><li>
-                        <div>
-                            <ul>
-                                {post.approved === 0 ? <li><i>Pending Approval</i></li> : ""}
-                                <li><Link to={{ pathname: `/post/${post.id}`, state: { author: `${post.user.first_name}` } }}>{post.title}</Link></li>
-                                <li>By {post.user.first_name} {post.user.last_name}</li>
-                                <li>Category: {post.category.label}</li>
-                                <li><Link to={`/edit_post/${post.id}`}>Edit</Link></li>
-                            </ul>
-                        </div>
-                    </li>
+                    return <>
+                        <section className="post">
+                            <div className="postHeader">
+                                <h3><Link to={`/post/${post.id}`}>{post.title}</Link>
+                                 {post.approved === 0 ? <i>(Pending Approval)</i> : ""}</h3>Publication Date: {post.publication_date}
+                            </div>
+                            <div className="postImage">
+                                <img src={post.image_url} />
+                            </div>
+                            <div className="postFooter">
+                                Author: {post.user.first_name} {post.user.last_name}
+                                {}
+                                <div><Link to={`/edit_post/${post.id}`} className="gear">⚙️</Link>
+                                    <button className="deleteButtonPost">🗑️</button>
+                                </div>
+                            </div>
+                        </section>
                     </>
                 })}
-            </ul>
+            </article>
         </>
     )
 }
