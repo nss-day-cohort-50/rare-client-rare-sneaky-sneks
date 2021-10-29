@@ -1,0 +1,115 @@
+.post {
+    width: 50%;
+    margin: auto;
+    border: 2px solid black;
+    margin-bottom: 1em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.singlePost{
+    width: 75%;
+    margin: auto;
+    border: 2px solid black;
+    margin-bottom: 1em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.post h3 {
+    margin: 0;
+}
+
+.post i {
+    font-weight: normal;
+}
+
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.singlePostHeader {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.singlePostHeader h2 {
+    color: #e25a3e;
+    margin: 0;
+}
+
+.postHeader a {
+    text-decoration: none;
+    color: #e25a3e;
+}
+
+.postImage {
+    margin: auto;
+    width: 50%;
+    margin-bottom: 1em;
+    display: flex;
+}
+
+.postImage img {
+    width: 100%;
+}
+
+.postFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gear {
+    text-decoration: none;
+    font-size: 2em;
+}
+
+.deleteButtonPost {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+.postList {
+    height: 30em;
+    overflow: scroll;
+    scrollbar-width: thin;
+}
+
+.postList::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    background-color: slategray;
+}
+
+.postList::-webkit-scrollbar-thumb {
+    background-color: #e25a3e;
+}
+
+.addComment {
+    margin: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+.commentButton {
+    width: fit-content;
+    margin: auto;
+    border-radius: 10px;
+    padding: 0.2em;
+}
+
+.commentButtonsDiv {
+    margin:auto;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5em;
+}

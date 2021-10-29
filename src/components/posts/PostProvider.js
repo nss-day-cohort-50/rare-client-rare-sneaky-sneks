@@ -21,6 +21,10 @@ export const getCurrentUser = (id) => {
     return fetch(`http://localhost:8088/user/${id}`)
 }
 
+export const getUsers = () => {
+    return fetch('http://localhost:8088/users')
+}
+
 export const getPosts = (currentUser) => {
     // debugger
     if (currentUser.is_staff === 1) {
@@ -29,3 +33,13 @@ export const getPosts = (currentUser) => {
         return fetch(`http://localhost:8088/posts`)
     }
 }
+
+export const postComment = (postComment) => {
+    return fetch(`http://localhost:8088/comments`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postComment)
+    })
+};
