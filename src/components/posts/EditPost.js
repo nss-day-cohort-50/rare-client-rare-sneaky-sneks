@@ -13,12 +13,12 @@ export const EditPost = ({ postToModify, editPost, updatePosts }) => {
     const { postId } = useParams()
 
     useEffect(() => {
-        getPostTags(postId)
-            .then(res => res.json())
-            .then(postTags => setPostTags(postTags))
         getAllTags()
             .then(res => res.json())
             .then(allTags => setAllTags(allTags))
+        getPostTags(post?.id)
+            .then(res => res.json())
+            .then(postTags => setPostTags(postTags))
     }, [])
 
     useEffect(() => {
