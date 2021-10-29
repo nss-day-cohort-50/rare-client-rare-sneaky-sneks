@@ -47,3 +47,15 @@ export const postComment = (postComment) => {
         body: JSON.stringify(postComment)
     })
 };
+
+export const getTags = () => {
+    return fetch('http://127.0.0.1:8088/postTags')
+}
+
+export const getPostTags = (postId) => {
+    return fetch(`http://127.0.0.1:8088/tagsbypost/${postId}`)
+}
+
+export const getAllTags = () => {
+    return fetch('http://127.0.0.1:8088/tags')
+}

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
-import { deletePost, getCurrentUser, getPost, getUsers, postComment } from "./PostProvider"
+import { deletePost, getCurrentUser, getPost, getTags, getUsers, postComment } from "./PostProvider"
 import { useHistory } from "react-router"
 import "./Post.css"
 import { EditDeleteModal } from "./EditDeleteModal"
 
 export const Post = () => {
     const { postId } = useParams()
+    const [tags, setTags] = useState([])
     const [post, setPost] = useState({})
     const [toDelete, setDelete] = useState(false)
     const history = useHistory()
@@ -26,6 +27,9 @@ export const Post = () => {
         getCurrentUser(parseInt(localStorage.getItem('rare_user_id')))
             .then(res => res.json())
             .then(user => setUser(user))
+        getTags()
+            .then(res => res.json())
+            .then(tags => setTags(tags))
     }, [isToggled])
 
     const toggleComment = () => {
@@ -58,6 +62,18 @@ export const Post = () => {
                 </div>
                 <div>
                     {post.content}
+                </div>
+                <div>
+                    <h4>Tags</h4>
+                    <ul>
+                        {tags.map(tag => {
+                            if (tag.post_id === post.id) {
+                                return <li>{tag?.tag?.label}</li>
+                            } else {
+                                return ""
+                            }
+                        })}
+                    </ul>
                 </div>
                 <div>
                     <h4>Comments</h4>

@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react"
 import { getCats } from "../categories/CategoryProvider"
-import { getCurrentUser, getMyPosts, getPost, getPosts, updatePost } from "./PostProvider"
+import { getAllTags, getCurrentUser, getMyPosts, getPost, getPosts, getPostTags, updatePost } from "./PostProvider"
+import { useParams } from "react-router"
 
 export const EditPost = ({ postToModify, editPost, updatePosts }) => {
     const [post, setPost] = useState({})
     const [categories, setCategories] = useState([])
     const [currentUser, setUser] = useState([])
+    const [allTags, setAllTags] = useState([])
+    const [postTags, setPostTags] = useState([])
+
+    const { postId } = useParams()
+
+    useEffect(() => {
+        getPostTags(postId)
+            .then(res => res.json())
+            .then(postTags => setPostTags(postTags))
+        getAllTags()
+            .then(res => res.json())
+            .then(allTags => setAllTags(allTags))
+    }, [])
 
     useEffect(() => {
         getCats()
@@ -22,6 +36,25 @@ export const EditPost = ({ postToModify, editPost, updatePosts }) => {
             .then(post => setPost(post))
     }, [postToModify]
     )
+
+    const handleTagCheckboxes = (event) => {
+        let newPost = {}
+        let chosenTag = parseInt(event.target.value)
+        newPost = Object.assign({}, post)
+        if (newPost.tagIds) {
+            if (newPost.tagIds.includes(chosenTag)) {
+                const index = newPost.tagIds.indexOf(chosenTag)
+                newPost.tagIds.pop([index])
+            }
+            else {
+                newPost.tagIds.push(chosenTag)
+            }
+        } else {
+            newPost.tagIds = []
+            newPost.tagIds.push(chosenTag)
+        }
+        setPost(newPost)
+    }
 
     const handleControlledInputChange = (event) => {
         const newPost = Object.assign({}, post)
@@ -68,6 +101,19 @@ export const EditPost = ({ postToModify, editPost, updatePosts }) => {
                             </option>)
                     }
                 </select>
+            </div>
+            <div className="form-group">
+                <h4>Tags</h4>
+                {allTags.map(at => {
+                    return <>
+                        <label>{at.label}</label>
+                        <input type="checkbox" value={`${at.id}`}
+                            checked={
+                                postTags.some(pt => at.id === pt.tag_id) ? true : false}
+                            onChange={handleTagCheckboxes}></input>
+                    </>
+                })}
+
             </div>
             <div className="form-group">
                 <label htmlFor="title">Post Title:</label>
