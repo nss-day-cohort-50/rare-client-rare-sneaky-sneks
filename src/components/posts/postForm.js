@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom'
-import ReactDOM from 'react-dom'
 import { getCurrentUser } from "./PostProvider"
 
 export const PostForm = () => {

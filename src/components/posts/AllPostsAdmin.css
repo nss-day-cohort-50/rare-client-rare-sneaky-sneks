@@ -1,0 +1,61 @@
+.deleteButton {
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.adminPostsTable {
+    background-color: lightblue;
+    border: 2px black solid;
+    border-collapse: collapse;
+    margin:auto;
+}
+
+.icons a {
+    text-decoration: none;
+}
+
+.adminPostsTable tr, td {
+    border: 1px solid black;
+    padding: 0.3em;
+}
+
+.adminPostsTable thead {
+    font-weight: bold;
+    padding: 0.3em;
+}
+
+.confirm-delete {
+    margin: auto;
+    width: 15em;
+    display: flex;
+    justify-content: space-between;
+}
+.confirm-delete button{
+    padding: 0.3em;
+    border-radius: 10px;
+}
+.confirm-delete-modal {
+    margin: auto;
+    width: 15em;
+    display: flex;
+    justify-content: center;
+}
+.confirm-delete-modal button{
+    padding: 0.3em;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.confirmDeleteModal {
+    height: fit-content;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.editPostModal {
+    height: 80%;
+    width: 50%;
+    border-radius: 10px;
+    margin: 2em auto auto auto;
+}

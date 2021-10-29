@@ -1,60 +1,40 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from 'react-router-dom'
-import ReactDOM from 'react-dom'
+import { getCats } from "../categories/CategoryProvider"
+import { getAllTags, getCurrentUser, getMyPosts, getPost, getPosts, getPostTags, updatePost } from "./PostProvider"
 import { useParams } from "react-router"
-import { getPost, updatePost } from "./PostProvider"
-import { TagManager } from "../tags/tagManager"
 
-export const EditPost = () => {
+export const EditPost = ({ postToModify, editPost, updatePosts }) => {
     const [post, setPost] = useState({})
     const [categories, setCategories] = useState([])
-    const [newCat, setNewCat] = useState("")
+    const [currentUser, setUser] = useState([])
     const [allTags, setAllTags] = useState([])
     const [postTags, setPostTags] = useState([])
-    const history = useHistory()
 
     const { postId } = useParams()
-    console.log(post)
-
-    const getCats = () => {
-        const copy = { ...newCat }
-        copy.label = ""
-        setNewCat(copy)
-        fetch('http://127.0.0.1:8088/categories')
-            .then(res => res.json())
-            .then(cats => setCategories(cats))
-    }
-
-    const getPostTags = (postId) => {
-        return fetch(`http://127.0.0.1:8088/tagsbypost/${postId}`)
-            .then(res => res.json())
-            .then(postTags => setPostTags(postTags))
-    }
-    console.log(postTags)
-
-    const getAllTags = () => {
-        return fetch('http://127.0.0.1:8088/tags')
-            .then(res => res.json())
-            .then(allTags => setAllTags(allTags))
-    }
 
     useEffect(() => {
         getAllTags()
-    }, [])
-
-    useEffect(() => {
-        getPostTags(postId)
+            .then(res => res.json())
+            .then(allTags => setAllTags(allTags))
+        getPostTags(post?.id)
+            .then(res => res.json())
+            .then(postTags => setPostTags(postTags))
     }, [])
 
     useEffect(() => {
         getCats()
+            .then(res => res.json())
+            .then(cats => setCategories(cats))
+        getCurrentUser(localStorage.getItem('rare_user_id'))
+            .then(res => res.json())
+            .then(user => setUser(user))
     }, []
     )
     useEffect(() => {
-        getPost(postId)
+        getPost(postToModify?.id)
             .then(res => res.json())
             .then(post => setPost(post))
-    }, []
+    }, [postToModify]
     )
 
     const handleTagCheckboxes = (event) => {
@@ -85,17 +65,28 @@ export const EditPost = () => {
     const constructUpdated = () => {
         const copyPost = { ...post }
         copyPost.category_id = parseInt(copyPost.category_id)
+        const path = window.location.pathname.split('/')[1]
         updatePost(copyPost)
             .then(response => {
-                if (response.ok) {
-                    history.push(`/post/${postId}`)
+                editPost.current.close()
+                if (response?.ok && path === "myposts") {
+                    getMyPosts()
+                        .then(res => res.json())
+                        .then(res => updatePosts(res))
+                } else if (response?.ok && path === "posts") {
+                    getPosts(currentUser)
+                        .then(res => res.json())
+                        .then(res => updatePosts(res))
+                } else {
+                    getPost(post.id)
+                        .then(res => res.json())
+                        .then(res => updatePosts(res))
                 }
             })
     }
 
     return (
         <form className="postForm">
-            <h2 className="postForm__title">Edit Post</h2>
             <div className="form-group">
                 <label htmlFor="category">Category: </label>
                 <select type="text" name="category_id" className="form-control"
@@ -104,7 +95,10 @@ export const EditPost = () => {
                     onChange={handleControlledInputChange}>
                     <option value={null} disabled>Select Category</option>
                     {
-                        categories.map(c => <option name="category_id" selected={post.category_id === c.id ? true : false} value={c.id}>{c.label}</option>)
+                        categories.map(c =>
+                            <option name="category_id" selected={post.category_id === c.id ? true : false} value={c.id}>
+                                {c.label}
+                            </option>)
                     }
                 </select>
             </div>
@@ -131,7 +125,7 @@ export const EditPost = () => {
                 />
             </div>
             <div className="form-group">
-                <img src={post.image_url} /><br />
+                <img src={post.image_url} alt="post" /><br />
                 <label htmlFor="image_url">Image link</label>
                 <input type="text" name="image_url" className="form-control"
                     placeholder="Place URL here"
@@ -142,18 +136,19 @@ export const EditPost = () => {
             </div>
             <div className="form-group">
                 <label htmlFor="content">Post Description:</label>
-                <textarea class="textarea" name="content" className="form-control"
+                <textarea name="content" className="form-control"
                     placeholder="Description"
                     value={post.content}
                     onChange={handleControlledInputChange}
                 ></textarea>
             </div>
-            <div>
+            <div className="confirm-delete-modal">
                 <button type="submit"
                     onClick={event => {
                         event.preventDefault()
                         constructUpdated()
                     }}>Submit</button>
+                <button onClick={(e) => { e.preventDefault(); editPost.current.close() }}>Cancel</button>
             </div>
         </form>
     )

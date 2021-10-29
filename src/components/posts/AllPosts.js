@@ -7,10 +7,6 @@ export const AllPosts = () => {
     const [posts, updatePosts] = useState([])
     const [currentUser, setUser] = useState({})
 
-    console.log(currentUser)
-    console.log(posts)
-
-
     useEffect(() => {
         getCurrentUser(parseInt(localStorage.getItem('rare_user_id')))
             .then(res => res.json())

@@ -1,16 +1,18 @@
-import React from "react"
+import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { getPosts, updatePost } from "./PostProvider"
+import "./AllPostsAdmin.css"
+import { EditDeleteModal } from "./EditDeleteModal"
 
 export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
+    const [postToModify, setPost] = useState()
+    const confirmDelete = useRef()
+    const editPost = useRef()
 
     const handleApproval = (post) => {
         let copy = post
-        if (copy.approved === 1) {
-            copy.approved = 0
-        } else {
-            copy.approved = 1
-        }
+        if (copy.approved === 1) { copy.approved = 0 }
+        else { copy.approved = 1 }
         updatePost(copy)
             .then(response => {
                 if (response.ok) {
@@ -23,11 +25,13 @@ export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
 
     return (
         <>
+            <EditDeleteModal postToModify={postToModify} updatePosts={updatePosts} confirmDelete={confirmDelete} editPost={editPost} />
+
             <h2>Admin</h2>
-            <table>
+            <table className="adminPostsTable">
                 <thead>
                     <tr>
-                        <td></td>
+                        <td><span role="img" aria-label="emoji">⚙️🗑️</span></td>
                         <td>Title</td>
                         <td>Author</td>
                         <td>Date</td>
@@ -36,11 +40,22 @@ export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
                         <td>Approved</td>
                     </tr>
                 </thead>
+                <tbody>
                 {posts?.map(post => {
-                    return <><tr>
-                        <td>
-                            <Link to={`/edit_post/${post.id}`}>⚙️</Link>
-                            <Link to={`/edit_post/${post.id}`}>🗑️</Link>
+                    return <><tr key={`tr-${post.id}`}>
+                        <td className="icons" >
+                            <button className="deleteButton"
+                                onClick={() => {
+                                    setPost(post)
+                                    editPost.current.showModal()
+                                }}><span role="img" aria-label="emoji">⚙️</span></button>
+                            <button className="deleteButton"
+                                onClick={() => {
+                                    setPost(post)
+                                    confirmDelete.current.showModal()
+                                }}>
+                                <span role="img" aria-label="emoji">🗑️</span>
+                            </button>
                         </td>
                         <td>
                             <Link to={{ pathname: `/post/${post.id}`, state: { author: `${post.user.first_name}` } }}>{post.title}</Link>
@@ -65,8 +80,8 @@ export const AllPostsAdmin = ({ posts, currentUser, updatePosts }) => {
                     </tr>
                     </>
                 })}
+                </tbody>
             </table>
         </>
     )
 }
-
