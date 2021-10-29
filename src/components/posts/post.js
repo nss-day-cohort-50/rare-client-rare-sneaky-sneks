@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useParams, Link } from "react-router-dom"
 import { deletePost, getCurrentUser, getPost, getUsers, postComment } from "./PostProvider"
 import { useHistory } from "react-router"
 import "./Post.css"
+import { EditDeleteModal } from "./EditDeleteModal"
 
 export const Post = () => {
     const { postId } = useParams()
@@ -40,8 +41,13 @@ export const Post = () => {
         setToggle(!isToggled)
     }
 
+    const confirmDelete = useRef()
+    const editPost = useRef()
+
     return (
         <>
+            <EditDeleteModal postToModify={post} updatePosts={setPost} confirmDelete={confirmDelete} editPost={editPost} />
+
             <section className="singlePost">
                 <div className="singlePostHeader">
                     <h2>{post.title}
@@ -91,8 +97,14 @@ export const Post = () => {
                                     }}>Confirm Delete</button>
                                     <button onClick={() => { setDelete(false) }}>Cancel</button></>
                                 :
-                                <><Link to={`/edit_post/${post.id}`} className="gear">⚙️</Link>
-                                    <button className="deleteButtonPost" onClick={() => { setDelete(true) }}>🗑️</button></>}
+                                <><button className="deleteButtonPost" onClick={() => {
+                                    editPost.current.showModal();
+                                    setPost(post)
+                                }}>⚙️</button>
+                                    <button className="deleteButtonPost" onClick={() => {
+                                        confirmDelete.current.showModal()
+                                    }
+                                    }>🗑️</button></>}
                         </div>
                         : ''}
                 </div>

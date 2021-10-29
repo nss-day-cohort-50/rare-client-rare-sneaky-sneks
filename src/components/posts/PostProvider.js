@@ -7,6 +7,10 @@ export const getPost = (id) => {
     return fetch(`http://localhost:8088/post/${id}`)
 }
 
+export const getMyPosts = () => {
+    return fetch(`http://localhost:8088/myposts/${localStorage.getItem('rare_user_id')}`)
+}
+
 export const updatePost = (updated) => {
     return fetch(`http://localhost:8088/posts/${updated.id}`, {
         method: "PUT",

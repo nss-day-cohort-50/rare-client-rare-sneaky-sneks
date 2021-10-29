@@ -35,3 +35,27 @@
     padding: 0.3em;
     border-radius: 10px;
 }
+.confirm-delete-modal {
+    margin: auto;
+    width: 15em;
+    display: flex;
+    justify-content: center;
+}
+.confirm-delete-modal button{
+    padding: 0.3em;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.confirmDeleteModal {
+    height: fit-content;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.editPostModal {
+    height: 80%;
+    width: 50%;
+    border-radius: 10px;
+    margin: 2em auto auto auto;
+}
